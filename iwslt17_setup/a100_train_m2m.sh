@@ -80,7 +80,7 @@ train(){
     python3 ${FAIRSEQ}/fairseq_cli/train.py "${DATA}" \
     --fp16 --memory-efficient-fp16 \
     --log-format simple \
-    --log-interval 100 \
+    --log-interval 200 \
     --save-dir "${SAVE_CKPT}" ${USR} \
     ${EXTRAS} \
     --task translation_multi_simple_epoch_eval \
@@ -101,7 +101,7 @@ train(){
     --weight-decay 0.0001 \
     --max-update 150000 \
     --train-subset "train" \
-    --update-freq 2 \
+    --update-freq 1 \
     --empty-cache-freq 100 \
     --save-interval-updates 10000 \
     --keep-interval-updates 5 \
@@ -155,6 +155,7 @@ run_expt_m2m(){
 #   5000 x 2x2 --> 20000 (titan rtx config)
 #   3000 x 8x2 --> 48000
 #   6000 x 8 --> 48000
+#   8000 x 8 --> 64000
 ###############################
 
 
@@ -167,7 +168,7 @@ run_expt_m2m(){
 # run_expt_m2m "m2m_noknn_kl" 5000 "0,1" "--encoder-latent-embeds --encoder-knn-embeds --encoder-knn-ratio 0.7 --knn-type approx --use-scann --index-trigger 300 --cache-scann --knn-value 3 --agreement-warmup 100 --no-knn-loss "
 
 ## equal weight knn kl
-run_expt_m2m "m2m_ann_emb_kl_eq_k" 4096 "0,1,2,3,4,5,6,7" "--encoder-latent-embeds --encoder-knn-embeds --encoder-knn-ratio 0.7 --knn-type approx --use-scann --index-trigger 300 --cache-scann --knn-value 3 --agreement-warmup 100 --equal-weights-k "
+run_expt_m2m "m2m_ann_emb_kl_eq_k" 6000 "0,1,2,3,4,5,6,7" "--encoder-latent-embeds --encoder-knn-embeds --encoder-knn-ratio 0.7 --knn-type approx --use-scann --index-trigger 300 --cache-scann --knn-value 3 --agreement-warmup 100 --equal-weights-k "
 
 
 ### ----------------------- for reference only -------------------------
