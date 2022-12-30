@@ -99,6 +99,7 @@ train(){
     --weight-decay 0.0001 \
     --max-update 150000 \
     --train-subset "train" \
+    --valid-subset "test" \
     --update-freq 1 \
     --empty-cache-freq 100 \
     --save-interval-updates 5000 \
