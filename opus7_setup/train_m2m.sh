@@ -78,6 +78,77 @@ train(){
     --fp16 --memory-efficient-fp16 \
     --log-format simple \
     --log-interval 300 \
+    --restore-file "${SAVE_CKPT}/checkpoint_4_30000.pt" \
+    --save-dir "${SAVE_CKPT}" ${USR} \
+    ${EXTRAS} \
+    --task translation_multi_simple_epoch_eval \
+    --langs "ar,de,fr,nl,ru,zh,en" \
+    --lang-pairs "${LANG_PAIRS}" \
+    --eval-lang-pairs "${EVAL_LANG_PAIRS}" \
+    --sampling-method temperature \
+    --sampling-temperature 1 \
+    --max-tokens "${BSZ}" \
+    --encoder-langtok tgt \
+    --criterion label_smoothed_cross_entropy_agreement \
+    --label-smoothing 0.1 \
+    --optimizer adam \
+    --lr-scheduler inverse_sqrt \
+    --lr 7e-04 \
+    --warmup-init-lr 1e-07 \
+    --warmup-updates 6000 \
+    --dropout 0.3 \
+    --weight-decay 0.0001 \
+    --max-update 150000 \
+    --train-subset "train" \
+    --valid-subset "test" \
+    --update-freq 1 \
+    --empty-cache-freq 100 \
+    --save-interval-updates 5000 \
+    --keep-interval-updates 10 \
+    --keep-last-epochs 10 \
+    --patience 10 \
+    --arch emb_transformer_wmt_en_de \
+    --encoder-normalize-before \
+    --decoder-normalize-before \
+    --share-decoder-input-output-embed \
+    --share-all-embeddings \
+    --ddp-backend no_c10d \
+    --num-workers 4 \
+    --best-checkpoint-metric ppl \
+    --wandb-project "embex_opus7_m2m"
+
+    # --share-all-embeddings \
+    # --memory-efficient-fp16 \
+    # --maximize-best-checkpoint-metric --> this saves the largest ppl
+    # --fp16 --memory-efficient-fp16 
+}
+
+finetune(){
+    ############################
+    watermark
+    ############################
+
+    DATA=$1
+    SAVE_CKPT=$2
+    LANG_PAIRS=$3
+    EVAL_LANG_PAIRS=$4
+    BSZ=$5
+    USR="--user-dir $6"
+    
+    if [ -z "$7" ]
+        then
+            echo "No extra options"
+            EXTRAS=""
+        else
+            EXTRAS="$7"
+            echo "custom options set"
+    fi
+
+    # set ARCH argument -- important
+    python3 ${FAIRSEQ}/fairseq_cli/train.py "${DATA}" \
+    --fp16 --memory-efficient-fp16 \
+    --log-format simple \
+    --log-interval 300 \
     --save-dir "${SAVE_CKPT}" ${USR} \
     ${EXTRAS} \
     --task translation_multi_simple_epoch_eval \
