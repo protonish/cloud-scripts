@@ -21,12 +21,12 @@ mkdir -p "${DEST}/bpe" "${DEST_BIN}"
 
 
 #########################
-LANGS=(
-    "de"
-    "it"
-    "nl"
-    "ro"
-)
+# LANGS=(
+#     "de"
+#     "it"
+#     "nl"
+#     "ro"
+# )
 
 CENTRE="en"
 
@@ -78,7 +78,6 @@ train(){
     --fp16 --memory-efficient-fp16 \
     --log-format simple \
     --log-interval 300 \
-    --restore-file "${SAVE_CKPT}/checkpoint_4_30000.pt" \
     --save-dir "${SAVE_CKPT}" ${USR} \
     ${EXTRAS} \
     --task translation_multi_simple_epoch_eval \
@@ -89,7 +88,7 @@ train(){
     --sampling-temperature 1 \
     --max-tokens "${BSZ}" \
     --encoder-langtok tgt \
-    --criterion label_smoothed_cross_entropy_agreement \
+    --criterion label_smoothed_cross_entropy \
     --label-smoothing 0.1 \
     --optimizer adam \
     --lr-scheduler inverse_sqrt \
@@ -98,7 +97,7 @@ train(){
     --warmup-updates 6000 \
     --dropout 0.3 \
     --weight-decay 0.0001 \
-    --max-update 150000 \
+    --max-update 120000 \
     --train-subset "train" \
     --valid-subset "test" \
     --update-freq 1 \
@@ -226,7 +225,7 @@ run_expt_m2m(){
 # clear_checkpoint_dir "${SETUP}/m2o_baseline/checkpoints"
 
 ## 1. baseline many 2 many
-# run_expt_m2m "m2m_baseline" 5000 "0,1"
+run_expt_m2m "m2m_baseline" 5000 "0,1"
 
 ## enc latent emb
 # run_expt_m2m "m2m_latent_emb" 5000 "0,1" "--encoder-latent-embeds "
@@ -238,7 +237,7 @@ run_expt_m2m(){
 # run_expt_m2m "m2m_rdrop_kl" 5000 "0,1" "--encoder-latent-embeds --encoder-knn-embeds --encoder-knn-ratio 0.7 --knn-type approx --use-scann --index-trigger 300 --cache-scann --knn-value 3 --agreement-warmup 100 --no-knn-loss "
 
 ## ann equal weights
-run_expt_m2m "m2m_ann_emb_kl_eq_k5" 5000 "0,1,2,3,4,5,6,7" "--encoder-latent-embeds --encoder-knn-embeds --encoder-knn-ratio 0.7 --knn-type approx --use-scann --index-trigger 400 --cache-scann --knn-value 5 --agreement-warmup 100 --equal-weights-k --no-kl-till-steps 180000 "
+# run_expt_m2m "m2m_ann_emb_kl_eq_k3_notok" 5000 "0,1,2,3,4,5,6,7" "--encoder-latent-embeds --encoder-knn-embeds --encoder-knn-ratio 0.7 --knn-type approx --use-scann --index-trigger 400 --cache-scann --knn-value 3 --agreement-warmup 100 --equal-weights-k --no-kl-till-steps 180000 "
 
 ## ann + no kl
 # run_expt_m2m "m2m_ann_no_kl_eq_k" 5000 "0,1" "--encoder-latent-embeds --encoder-knn-embeds --encoder-knn-ratio 0.7 --knn-type approx --use-scann --index-trigger 300 --cache-scann --knn-value 3 --agreement-warmup 100 --equal-weights-k --agreement-alpha -1 "
