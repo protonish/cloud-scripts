@@ -88,7 +88,7 @@ train(){
     --sampling-temperature 1 \
     --max-tokens "${BSZ}" \
     --encoder-langtok tgt \
-    --criterion label_smoothed_cross_entropy \
+    --criterion label_smoothed_cross_entropy_agreement \
     --label-smoothing 0.1 \
     --optimizer adam \
     --lr-scheduler inverse_sqrt \
