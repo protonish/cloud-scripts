@@ -225,7 +225,7 @@ run_expt_m2m(){
 # clear_checkpoint_dir "${SETUP}/m2o_baseline/checkpoints"
 
 ## 1. baseline many 2 many
-run_expt_m2m "m2m_baseline" 5000 "0,1"
+run_expt_m2m "m2m_baseline" 5000 "0,1,2,3,4,5,6,7"
 
 ## enc latent emb
 # run_expt_m2m "m2m_latent_emb" 5000 "0,1" "--encoder-latent-embeds "
