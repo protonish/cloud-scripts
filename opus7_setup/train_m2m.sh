@@ -169,7 +169,7 @@ finetune(){
     --weight-decay 0.0001 \
     --max-update 150000 \
     --train-subset "train" \
-    --valid-subset "zero/test" \
+    --valid-subset "test" \
     --update-freq 1 \
     --empty-cache-freq 50 \
     --save-interval-updates 5000 \
