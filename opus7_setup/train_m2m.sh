@@ -133,13 +133,14 @@ finetune(){
     EVAL_LANG_PAIRS=$4
     BSZ=$5
     USR="--user-dir $6"
+    PRETRAINED_MODEL=$7
     
-    if [ -z "$7" ]
+    if [ -z "$8" ]
         then
             echo "No extra options"
             EXTRAS=""
         else
-            EXTRAS="$7"
+            EXTRAS="$8"
             echo "custom options set"
     fi
 
@@ -150,6 +151,7 @@ finetune(){
     --log-interval 300 \
     --save-dir "${SAVE_CKPT}" ${USR} \
     ${EXTRAS} \
+    --finetune-from-model ${PRETRAINED_MODEL} --reset-dataloader \
     --task translation_multi_simple_epoch_eval \
     --langs "ar,de,fr,nl,ru,zh,en" \
     --lang-pairs "${LANG_PAIRS}" \
@@ -157,15 +159,14 @@ finetune(){
     --sampling-method temperature \
     --sampling-temperature 1 \
     --max-tokens "${BSZ}" \
-    --encoder-langtok tgt \
     --criterion label_smoothed_cross_entropy_agreement \
     --label-smoothing 0.1 \
-    --optimizer adam \
+    --optimizer adam --reset-optimizer \
     --lr-scheduler inverse_sqrt \
-    --lr 7e-04 \
+    --lr 5e-04 \
     --warmup-init-lr 1e-07 \
-    --warmup-updates 6000 \
-    --dropout 0.3 \
+    --warmup-updates 4000 \
+    --dropout 0.1 \
     --weight-decay 0.0001 \
     --max-update 150000 \
     --train-subset "train" \
@@ -217,7 +218,32 @@ run_expt_m2m(){
     train $data $ckpt $lang_pairs $eval_lang_pairs $bsz $USR_DIR "$EXTRAS" | tee -a "${log_dir}/train.log"
 }
 
+run_finetune_m2m(){
+    name=$1
+    ckpt="${SETUP}/${name}/checkpoints"
+    log_dir="${SETUP}/${name}/logs"
+    mkdir -p $log_dir $ckpt "${SETUP}/${name}/results"
 
+    data=$DEST_BIN
+    
+    lang_pairs="ar-en,en-ar,de-en,en-de,zh-en,en-zh,fr-en,en-fr,ru-en,en-ru,nl-en,en-nl"
+    eval_lang_pairs="ar-de,ar-fr,ar-nl,ar-ru,ar-zh,de-ar,de-fr,de-nl,de-ru,de-zh,fr-ar,fr-de,fr-nl,fr-ru,fr-zh,nl-ar,nl-de,nl-fr,nl-ru,nl-zh,ru-ar,ru-de,ru-fr,ru-nl,ru-zh,zh-ar,zh-de,zh-fr,zh-nl,zh-ru"
+    
+    bsz=$2
+
+    DEVICES=$3
+
+    EXTRAS=$4
+    echo "--> $EXTRAS"
+    
+    PRETRAINED="${SETUP}/m2m_ann_emb_kl_eq_k3_hard_langtok/checkpoints/checkpoint16.pt"
+
+    # setting wandb run name
+    export WANDB_NAME=$name
+
+    export CUDA_VISIBLE_DEVICES=$DEVICES
+    finetune $data $ckpt $lang_pairs $eval_lang_pairs $bsz $USR_DIR $PRETRAINED "$EXTRAS" | tee -a "${log_dir}/train.log"
+}
 
 # call run expt
 
@@ -236,8 +262,12 @@ run_expt_m2m(){
 ## rdrop agreement
 # run_expt_m2m "m2m_rdrop_kl" 5000 "0,1" "--encoder-latent-embeds --encoder-knn-embeds --encoder-knn-ratio 0.7 --knn-type approx --use-scann --index-trigger 300 --cache-scann --knn-value 3 --agreement-warmup 100 --no-knn-loss "
 
-## ann equal weights
-run_expt_m2m "m2m_ann_emb_kl_eq_k3_hard_langtok" 5000 "0,1,2,3,4,5,6,7" "--encoder-latent-embeds --encoder-knn-embeds --encoder-knn-ratio 0.7 --knn-type approx --use-scann --index-trigger 400 --cache-scann --knn-value 3 --agreement-warmup 100 --equal-weights-k --no-kl-till-steps 190000 "
+## ann equal weights <-->
+# run_expt_m2m "m2m_ann_emb_kl_eq_k3_hard_langtok" 5000 "0,1,2,3,4,5,6,7" "--encoder-latent-embeds --encoder-knn-embeds --encoder-knn-ratio 0.7 --knn-type approx --use-scann --index-trigger 400 --cache-scann --knn-value 3 --agreement-warmup 100 --equal-weights-k --no-kl-till-steps 190000 "
+
+## ^^^^ finetune 
+run_finetune_m2m "m2m_ann_emb_kl_eq_k3_hard_ft" 4000 "0,1,2,3,4,5,6,7" "--encoder-latent-embeds --encoder-knn-embeds --encoder-knn-ratio 0.7 --knn-type approx --use-scann --index-trigger 400 --cache-scann --knn-value 5 --agreement-warmup 100 --equal-weights-k --agreement-alpha 5 "
+
 
 ## ann + no kl
 # run_expt_m2m "m2m_ann_no_kl_eq_k" 5000 "0,1" "--encoder-latent-embeds --encoder-knn-embeds --encoder-knn-ratio 0.7 --knn-type approx --use-scann --index-trigger 300 --cache-scann --knn-value 3 --agreement-warmup 100 --equal-weights-k --agreement-alpha -1 "
