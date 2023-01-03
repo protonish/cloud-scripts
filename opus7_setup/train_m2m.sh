@@ -87,7 +87,6 @@ train(){
     --sampling-method temperature \
     --sampling-temperature 1 \
     --max-tokens "${BSZ}" \
-    --encoder-langtok tgt \
     --criterion label_smoothed_cross_entropy_agreement \
     --label-smoothing 0.1 \
     --optimizer adam \
@@ -120,6 +119,7 @@ train(){
     # --memory-efficient-fp16 \
     # --maximize-best-checkpoint-metric --> this saves the largest ppl
     # --fp16 --memory-efficient-fp16 
+    # --encoder-langtok tgt \
 }
 
 finetune(){
@@ -169,7 +169,7 @@ finetune(){
     --weight-decay 0.0001 \
     --max-update 150000 \
     --train-subset "train" \
-    --valid-subset "test" \
+    --valid-subset "zero/test" \
     --update-freq 1 \
     --empty-cache-freq 50 \
     --save-interval-updates 5000 \
