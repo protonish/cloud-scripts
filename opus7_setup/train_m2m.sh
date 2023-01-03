@@ -151,7 +151,7 @@ finetune(){
     --log-interval 300 \
     --save-dir "${SAVE_CKPT}" ${USR} \
     ${EXTRAS} \
-    --finetune-from-model ${PRETRAINED_MODEL} --reset-dataloader \
+    --finetune-from-model ${PRETRAINED_MODEL} \
     --task translation_multi_simple_epoch_eval \
     --langs "ar,de,fr,nl,ru,zh,en" \
     --lang-pairs "${LANG_PAIRS}" \
@@ -161,7 +161,7 @@ finetune(){
     --max-tokens "${BSZ}" \
     --criterion label_smoothed_cross_entropy_agreement \
     --label-smoothing 0.1 \
-    --optimizer adam --reset-optimizer \
+    --optimizer adam \
     --lr-scheduler inverse_sqrt \
     --lr 5e-04 \
     --warmup-init-lr 1e-07 \
