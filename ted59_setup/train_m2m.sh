@@ -87,7 +87,6 @@ train(){
     --warmup-init-lr 0.001 \
     --warmup-updates 40000 \
     --dropout 0.2 \
-    --weight-decay 0.0001 \
     --max-update 200000 \
     --train-subset "train" \
     --update-freq 1 \
@@ -112,6 +111,8 @@ train(){
     # --memory-efficient-fp16 \
     # --maximize-best-checkpoint-metric --> this saves the largest ppl
     # --fp16 --memory-efficient-fp16 
+
+    # --weight-decay 0.0001 \
 }
 
 run_expt_m2m(){
@@ -160,7 +161,7 @@ run_expt_m2m(){
 # run_expt_m2m "m2m_rdrop_kl" 5000 "0,1" "--encoder-latent-embeds --encoder-knn-embeds --encoder-knn-ratio 0.7 --knn-type approx --use-scann --index-trigger 300 --cache-scann --knn-value 3 --agreement-warmup 100 --no-knn-loss "
 
 ## ann equal weights
-run_expt_m2m "m2m_ann_emb_kl_eq_k" 5000 "0,1,2,3,4,5,6,7" "--encoder-latent-embeds --encoder-knn-embeds --encoder-knn-ratio 0.7 --knn-type approx --use-scann --index-trigger 400 --cache-scann --knn-value 3 --agreement-warmup 100 --equal-weights-k --no-kl-till-steps 25000 "
+run_expt_m2m "m2m_aharoni_ann_emb_kl_eq_k" 5000 "0,1,2,3,4,5,6,7" "--encoder-latent-embeds --encoder-knn-embeds --encoder-knn-ratio 0.7 --knn-type approx --use-scann --index-trigger 400 --cache-scann --knn-value 3 --agreement-warmup 100 --equal-weights-k --no-kl-till-steps 25000 "
 
 
 # local test -- running
