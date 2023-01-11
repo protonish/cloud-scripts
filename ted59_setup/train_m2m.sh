@@ -67,7 +67,7 @@ train(){
 
     # set ARCH argument -- important
     python3 ${FAIRSEQ}/fairseq_cli/train.py "${DATA}" \
-    --fp16 --memory-efficient-fp16 --fp16-scale-tolerance=0.25 \
+    --fp16 --memory-efficient-fp16 \
     --log-format simple \
     --log-interval 100 \
     --save-dir "${SAVE_CKPT}" ${USR} \
@@ -90,7 +90,7 @@ train(){
     --dropout 0.2 \
     --max-update 200000 \
     --train-subset "train" \
-    --update-freq 1 \
+    --update-freq 2 \
     --empty-cache-freq 100 \
     --save-interval-updates 5000 \
     --keep-interval-updates 10 \
