@@ -83,14 +83,14 @@ train(){
     --label-smoothing 0.1 \
     --optimizer adam \
     --lr-scheduler inverse_sqrt \
-    --lr 7e-04 \
-    --warmup-init-lr 1e-07 \
-    --warmup-updates 6000 \
-    --dropout 0.3 \
+    --lr 3 \
+    --warmup-init-lr 0.001 \
+    --warmup-updates 40000 \
+    --dropout 0.2 \
     --weight-decay 0.0001 \
-    --max-update 100000 \
+    --max-update 200000 \
     --train-subset "train" \
-    --update-freq 4 \
+    --update-freq 1 \
     --empty-cache-freq 100 \
     --save-interval-updates 5000 \
     --keep-interval-updates 10 \
@@ -101,6 +101,8 @@ train(){
     --decoder-normalize-before \
     --share-decoder-input-output-embed \
     --share-all-embeddings \
+    --atention-dropout 0.2 \
+    --activation-dropout 0.2 \
     --ddp-backend no_c10d \
     --num-workers 4 \
     --best-checkpoint-metric ppl \
