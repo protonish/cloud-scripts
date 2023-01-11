@@ -100,7 +100,7 @@ train(){
     --decoder-normalize-before \
     --share-decoder-input-output-embed \
     --share-all-embeddings \
-    --atention-dropout 0.2 \
+    --attention-dropout 0.2 \
     --activation-dropout 0.2 \
     --ddp-backend no_c10d \
     --num-workers 4 \
