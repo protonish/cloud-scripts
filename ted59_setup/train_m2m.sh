@@ -84,9 +84,9 @@ train(){
     --optimizer adam \
     --lr-scheduler inverse_sqrt \
     --lr 1.5 \
-    --warmup-init-lr 0.001 \
+    --warmup-init-lr 0.0001 \
     --warmup-updates 20000 \
-    --clip-norm 2 \
+    --clip-norm 1 \
     --dropout 0.2 \
     --max-update 200000 \
     --train-subset "train" \
