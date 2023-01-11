@@ -83,14 +83,14 @@ train(){
     --label-smoothing 0.1 \
     --optimizer adam \
     --lr-scheduler inverse_sqrt \
-    --lr 0.5 \
-    --warmup-init-lr 0.0005 \
+    --lr 5e-04 \
+    --warmup-init-lr 1e-07 \
     --warmup-updates 10000 \
-    --clip-norm 1 \
+    --clip-norm 2 \
     --dropout 0.2 \
     --max-update 200000 \
     --train-subset "train" \
-    --update-freq 2 \
+    --update-freq 1 \
     --empty-cache-freq 100 \
     --save-interval-updates 5000 \
     --keep-interval-updates 10 \
