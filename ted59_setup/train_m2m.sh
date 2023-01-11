@@ -83,7 +83,7 @@ train(){
     --label-smoothing 0.1 \
     --optimizer adam \
     --lr-scheduler inverse_sqrt \
-    --lr 5e-03 \
+    --lr 3e-03 \
     --warmup-init-lr 1e-06 \
     --warmup-updates 10000 \
     --clip-norm 2 \
