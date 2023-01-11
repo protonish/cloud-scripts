@@ -84,7 +84,7 @@ train(){
     --optimizer adam \
     --lr-scheduler inverse_sqrt \
     --lr 3 \
-    --warmup-init-lr 0.001 \
+    --warmup-init-lr 0.1 \
     --warmup-updates 40000 \
     --dropout 0.2 \
     --max-update 200000 \
