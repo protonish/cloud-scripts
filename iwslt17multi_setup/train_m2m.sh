@@ -106,8 +106,8 @@ train(){
     --update-freq 1 \
     --empty-cache-freq 50 \
     --save-interval-updates 5000 \
-    --keep-interval-updates 2 \
-    --keep-last-epochs 5 \
+    --keep-interval-updates 20 \
+    --keep-last-epochs 20 \
     --patience 10 \
     --arch emb_transformer_wmt_en_de \
     --encoder-layers 6 \
