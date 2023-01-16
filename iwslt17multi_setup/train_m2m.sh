@@ -80,7 +80,7 @@ train(){
     python3 ${FAIRSEQ}/fairseq_cli/train.py "${DATA}" \
     --fp16 --memory-efficient-fp16 \
     --log-format simple \
-    --log-interval 100 \
+    --log-interval 200 \
     --save-dir "${SAVE_CKPT}" ${USR} \
     ${EXTRAS} \
     --task translation_multi_simple_epoch_eval \
