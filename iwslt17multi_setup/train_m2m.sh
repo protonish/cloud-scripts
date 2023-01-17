@@ -100,7 +100,7 @@ train(){
     --warmup-updates 6000 \
     --dropout 0.3 \
     --weight-decay 0.0001 \
-    --max-update 200000 \
+    --max-update 400000 \
     --train-subset "train" \
     --valid-subset "valid" \
     --update-freq 1 \
