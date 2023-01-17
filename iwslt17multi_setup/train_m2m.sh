@@ -182,7 +182,10 @@ run_expt_m2m(){
 ## ann + kl + eq
 # run_expt_m2m "m2m_cloud_ann_emb_kl_eq_k" 2048 "0,1,2,3,4,5,6,7" "--encoder-latent-embeds --encoder-knn-embeds --encoder-knn-ratio 0.7 --knn-type approx --use-scann --index-trigger 300 --cache-scann --knn-value 3 --agreement-warmup 100 --equal-weights-k --no-kl-till-steps 200 --agreement-alpha 5 "
 
-run_expt_m2m "m2m_cloud_ann_emb_kl_eq_k_shared" 2500 "0,1,2,3,4,5,6,7" "--share-all-embeddings --encoder-latent-embeds --encoder-knn-embeds --encoder-knn-ratio 0.7 --knn-type approx --use-scann --index-trigger 300 --cache-scann --knn-value 3 --agreement-warmup 100 --equal-weights-k --no-kl-till-steps 200 --agreement-alpha 5 "
+# run_expt_m2m "m2m_cloud_ann_emb_kl_eq_k_shared" 2500 "0,1,2,3,4,5,6,7" "--share-all-embeddings --encoder-latent-embeds --encoder-knn-embeds --encoder-knn-ratio 0.7 --knn-type approx --use-scann --index-trigger 300 --cache-scann --knn-value 3 --agreement-warmup 100 --equal-weights-k --no-kl-till-steps 200 --agreement-alpha 5 "
+
+run_expt_m2m "m2m_cloud_ann_emb_kl_eq_k_shared_latent5k" 2500 "0,1,2,3,4,5,6,7" "--share-all-embeddings --encoder-latent-embeds --encoder-knn-embeds --encoder-knn-ratio 0.7 --knn-type approx --use-scann --index-trigger 300 --cache-scann --knn-value 3 --agreement-warmup 100 --equal-weights-k --no-kl-till-steps 200 --agreement-alpha 5 "
+
 
 ### ----------------------- for reference only -------------------------
 ## enc latent embeds al shared
